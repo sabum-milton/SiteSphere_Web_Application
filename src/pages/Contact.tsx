@@ -11,6 +11,8 @@ export default function Contact({ onNavigate }: ContactProps) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    const text = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nSubject: ${formData.subject}\nMessage: ${formData.message}`);
+    window.open(`https://wa.me/237674109461?text=${text}`, '_blank');
     setSubmitted(true);
     setTimeout(() => { setSubmitted(false); setFormData({ name: '', email: '', phone: '', subject: '', message: '' }); }, 3000);
   };
@@ -42,7 +44,7 @@ export default function Contact({ onNavigate }: ContactProps) {
           {[
             { icon: Mail, title: 'Email Us', desc: 'Send us an email anytime', value: 'sabummilton14@gmail.com', link: 'mailto:sabummilton14@gmail.com' },
             { icon: Phone, title: 'Call Us', desc: 'Mon-Fri from 8am to 6pm', value: '+237 674109979', link: 'tel:+237674109979' },
-            { icon: MessageCircle, title: 'WhatsApp', desc: 'Chat with us instantly', value: 'Start Chat', link: 'https://wa.me/237674109979' },
+            { icon: MessageCircle, title: 'WhatsApp', desc: 'Chat with us instantly', value: 'Start Chat', link: 'https://wa.me/237674109461' },
           ].map((item) => (
             <div key={item.title} className="bg-white rounded-md border border-amazon-border p-5 amazon-card text-center">
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-md bg-amazon-lightbg border border-amazon-border">
@@ -76,14 +78,14 @@ export default function Contact({ onNavigate }: ContactProps) {
               <h2 className="text-lg font-bold text-amazon-text mb-4">Visit Our Office</h2>
               <div className="space-y-4">
                 <div className="flex items-start gap-3"><MapPin className="h-5 w-5 text-amazon-dark flex-shrink-0 mt-0.5" /><div><p className="text-xs font-bold text-amazon-text">Address</p><p className="text-sm text-amazon-subtle">Nouvelle Route Nkolbisson</p></div></div>
-                <div className="flex items-start gap-3"><Clock className="h-5 w-5 text-amazon-dark flex-shrink-0 mt-0.5" /><div><p className="text-xs font-bold text-amazon-text">Business Hours</p><p className="text-sm text-amazon-subtle">Mon-Fri: 8:00 AM - 6:00 PM<br />Sat: 10:00 AM - 4:00 PM<br />Sun: Closed</p></div></div>
+                <div className="flex items-start gap-3"><Clock className="h-5 w-5 text-amazon-dark flex-shrink-0 mt-0.5" /><div><p className="text-xs font-bold text-amazon-text">Availability</p><p className="text-sm text-amazon-subtle">Always Available and Open to Serve You</p></div></div>
                 <div className="flex items-start gap-3"><Phone className="h-5 w-5 text-amazon-dark flex-shrink-0 mt-0.5" /><div><p className="text-xs font-bold text-amazon-text">Phone</p><p className="text-sm text-amazon-subtle">+237 674109979</p></div></div>
               </div>
             </div>
             <div className="bg-amazon-midblue rounded-md p-6 text-white">
               <h3 className="text-lg font-bold mb-2">Need Immediate Help?</h3>
               <p className="text-sm text-gray-300 mb-4">For urgent matters, our support team is available 24/7 via WhatsApp.</p>
-              <a href="https://wa.me/237674109979" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-white text-amazon-dark px-5 py-2.5 rounded-md font-bold text-sm hover:bg-gray-100 transition"><MessageCircle className="h-4 w-4" />Chat on WhatsApp</a>
+              <a href="https://wa.me/237674109461" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-white text-amazon-dark px-5 py-2.5 rounded-md font-bold text-sm hover:bg-gray-100 transition"><MessageCircle className="h-4 w-4" />Chat on WhatsApp</a>
             </div>
           </div>
         </div>

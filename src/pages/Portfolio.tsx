@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ExternalLink, ChevronRight, Filter } from 'lucide-react';
+import { ChevronRight, Filter } from 'lucide-react';
 import { portfolioProjects } from '../data/mockData';
 
 interface PortfolioProps {
@@ -93,16 +93,7 @@ export default function Portfolio({ onNavigate }: PortfolioProps) {
                     </span>
                   ))}
                 </div>
-                {project.demoUrl && (
-                  <a
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-amazon-link hover:text-amazon-linkhover hover:underline transition"
-                  >
-                    View Demo <ExternalLink className="h-3.5 w-3.5" />
-                  </a>
-                )}
+
               </div>
             </div>
           ))}
