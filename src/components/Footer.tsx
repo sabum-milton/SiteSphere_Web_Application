@@ -100,7 +100,7 @@ export default function Footer({ onNavigate }: FooterProps) {
             </div>
             <div className="flex gap-4">
               <a
-                href="https://facebook.com"
+                href="https://facebook.com/SiteSphere"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition"
