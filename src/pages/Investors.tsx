@@ -1,6 +1,5 @@
 import { useState, FormEvent } from 'react';
 import { TrendingUp, Users, DollarSign, Target, ArrowUpRight, Check, ChevronRight, Loader2, AlertCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 
 interface InvestorsProps {
   onNavigate: (page: string) => void;

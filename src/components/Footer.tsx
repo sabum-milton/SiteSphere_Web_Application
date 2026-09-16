@@ -1,4 +1,4 @@
-import { Facebook, Instagram, MessageCircle, Mail, Phone, MapPin, ChevronUp } from 'lucide-react';
+import { Facebook, Youtube, Mail, Phone, MapPin, ChevronUp } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (page: string) => void;
@@ -14,7 +14,7 @@ export default function Footer({ onNavigate }: FooterProps) {
         { label: 'About SiteSphere', page: 'home' },
         { label: 'Our Services', page: 'services' },
         { label: 'Portfolio', page: 'portfolio' },
-        { label: 'Careers', page: 'contact' },
+        { label: 'All Offerings', page: 'all' },
       ],
     },
     {
@@ -38,10 +38,10 @@ export default function Footer({ onNavigate }: FooterProps) {
     {
       title: 'Let Us Help You',
       links: [
-        { label: 'Your Account', page: 'dashboard' },
-        { label: 'Your Orders', page: 'dashboard' },
         { label: 'Help Center', page: 'contact' },
         { label: 'Contact Us', page: 'contact' },
+        { label: 'Terms & Conditions', page: 'terms' },
+        { label: 'Privacy Policy', page: 'privacy' },
       ],
     },
   ];
@@ -94,34 +94,27 @@ export default function Footer({ onNavigate }: FooterProps) {
               className="h-10 w-auto"
             />
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-gray-400">
-              <button onClick={() => onNavigate('contact')} className="hover:text-white transition">Conditions of Use</button>
-              <button onClick={() => onNavigate('contact')} className="hover:text-white transition">Privacy Notice</button>
-              <button onClick={() => onNavigate('contact')} className="hover:text-white transition">Your Ads Privacy Choices</button>
+              <button onClick={() => onNavigate('terms')} className="hover:text-white transition">Conditions of Use</button>
+              <button onClick={() => onNavigate('privacy')} className="hover:text-white transition">Privacy Notice</button>
             </div>
             <div className="flex gap-4">
               <a
                 href="https://facebook.com/SiteSphere"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Facebook"
                 className="text-gray-400 hover:text-white transition"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://youtube.com/@SiteSphere"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="YouTube"
                 className="text-gray-400 hover:text-white transition"
               >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://wa.me/237674109461"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition"
-              >
-                <MessageCircle className="w-5 h-5" />
+                <Youtube className="w-5 h-5" />
               </a>
             </div>
           </div>

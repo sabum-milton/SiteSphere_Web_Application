@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { useState } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -9,32 +8,15 @@ import Testimonials from './pages/Testimonials';
 import Pricing from './pages/Pricing';
 import Investors from './pages/Investors';
 import Contact from './pages/Contact';
-import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+import All from './pages/All';
+import SearchPage from './pages/SearchPage';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 
-function AppContent() {
+function App() {
   const [currentPage, setCurrentPage] = useState('home');
-  const { user, loading } = useAuth();
-
-  useEffect(() => {
-    if (currentPage === 'dashboard' && !loading && !user) {
-      setCurrentPage('login');
-    }
-  }, [currentPage, user, loading]);
 
   const renderPage = () => {
-    if (loading) {
-      return (
-        <div className="min-h-screen bg-amazon-lightbg flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-12 h-12 border-4 border-amazon-orange border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-            <p className="text-sm text-amazon-subtle">Loading...</p>
-          </div>
-        </div>
-      );
-    }
-
     switch (currentPage) {
       case 'home':
         return <Home onNavigate={setCurrentPage} />;
@@ -50,39 +32,25 @@ function AppContent() {
         return <Investors onNavigate={setCurrentPage} />;
       case 'contact':
         return <Contact onNavigate={setCurrentPage} />;
-      case 'dashboard':
-        return user ? (
-          <Dashboard onNavigate={setCurrentPage} />
-        ) : (
-          <Login onNavigate={setCurrentPage} />
-        );
-      case 'login':
-        return <Login onNavigate={setCurrentPage} />;
-      case 'signup':
-        return <Signup onNavigate={setCurrentPage} />;
+      case 'all':
+        return <All onNavigate={setCurrentPage} />;
+      case 'search':
+        return <SearchPage onNavigate={setCurrentPage} />;
+      case 'terms':
+        return <Terms onNavigate={setCurrentPage} />;
+      case 'privacy':
+        return <Privacy onNavigate={setCurrentPage} />;
       default:
         return <Home onNavigate={setCurrentPage} />;
     }
   };
 
-  const shouldShowHeaderFooter = currentPage !== 'login' && currentPage !== 'signup';
-
   return (
     <div className="min-h-screen flex flex-col">
-      {shouldShowHeaderFooter && (
-        <Header currentPage={currentPage} onNavigate={setCurrentPage} />
-      )}
+      <Header currentPage={currentPage} onNavigate={setCurrentPage} />
       <main className="flex-grow">{renderPage()}</main>
-      {shouldShowHeaderFooter && <Footer onNavigate={setCurrentPage} />}
+      <Footer onNavigate={setCurrentPage} />
     </div>
-  );
-}
-
-function App() {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
   );
 }
 
