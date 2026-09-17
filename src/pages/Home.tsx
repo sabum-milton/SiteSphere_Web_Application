@@ -75,7 +75,7 @@ export default function Home({ onNavigate }: HomeProps) {
 
       {/* Who We Are video section */}
       {overviewVideo && (
-        <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 mt-6">
+        <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 mt-6 mb-6">
           <div className="bg-white rounded-md p-5 amazon-card border border-amazon-border">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
               <div className="relative rounded-md overflow-hidden border border-amazon-border bg-black aspect-video">
@@ -110,7 +110,7 @@ export default function Home({ onNavigate }: HomeProps) {
       )}
 
       {/* Service cards grid — Amazon product card style */}
-      <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 -mt-10 relative z-10">
+      <section className={`max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative z-10 ${overviewVideo ? 'mt-6' : '-mt-10'}`}>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.slice(0, 6).map((service) => {
             const Icon = iconMap[service.icon];
