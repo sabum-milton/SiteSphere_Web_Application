@@ -14,6 +14,7 @@ export default function Footer({ onNavigate }: FooterProps) {
         { label: 'About SiteSphere', page: 'home' },
         { label: 'Our Services', page: 'services' },
         { label: 'Portfolio', page: 'portfolio' },
+        { label: 'Media Gallery', page: 'gallery' },
         { label: 'All Offerings', page: 'all' },
       ],
     },
