@@ -12,7 +12,6 @@ import All from './pages/All';
 import SearchPage from './pages/SearchPage';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
-import Gallery from './pages/Gallery';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -41,8 +40,6 @@ function App() {
         return <Terms onNavigate={setCurrentPage} />;
       case 'privacy':
         return <Privacy onNavigate={setCurrentPage} />;
-      case 'gallery':
-        return <Gallery onNavigate={setCurrentPage} />;
       default:
         return <Home onNavigate={setCurrentPage} />;
     }

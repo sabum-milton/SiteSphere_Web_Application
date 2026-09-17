@@ -33,7 +33,6 @@ export default function Header({ currentPage, onNavigate }: HeaderProps) {
     { name: 'Testimonials', path: 'testimonials' },
     { name: 'Pricing', path: 'pricing' },
     { name: 'Investors', path: 'investors' },
-    { name: 'Gallery', path: 'gallery' },
     { name: 'Contact', path: 'contact' },
   ];
 
