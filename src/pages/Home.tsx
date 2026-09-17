@@ -1,5 +1,8 @@
-import { ArrowRight, ChevronRight, Star, Code, Smartphone, Briefcase, TrendingUp, Package } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowRight, ChevronRight, Star, Code, Smartphone, Briefcase, TrendingUp, Package, Play } from 'lucide-react';
 import { services, portfolioProjects, testimonials } from '../data/mockData';
+import { supabase } from '../lib/supabase';
+import type { MediaFile } from '../types';
 
 interface HomeProps {
   onNavigate: (page: string) => void;
@@ -9,6 +12,30 @@ const heroImage = 'https://images.pexels.com/photos/3182800/pexels-photo-3182800
 
 export default function Home({ onNavigate }: HomeProps) {
   const iconMap: Record<string, any> = { Code, Smartphone, Briefcase, TrendingUp, Package };
+  const [overviewVideo, setOverviewVideo] = useState<MediaFile | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadOverviewVideo = async () => {
+      const { data, error } = await supabase
+        .from('storage')
+        .select('fileid, file_name, file_url, size, created_at')
+        .or('file_name.ilike.%video%,file_name.ilike.%overview%')
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      if (error || !data || data.length === 0) return;
+
+      if (isMounted) setOverviewVideo(data[0]);
+    };
+
+    loadOverviewVideo();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="bg-amazon-lightbg min-h-screen">
@@ -45,6 +72,42 @@ export default function Home({ onNavigate }: HomeProps) {
           </div>
         </div>
       </section>
+
+      {/* Who We Are video section */}
+      {overviewVideo && (
+        <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 mt-6">
+          <div className="bg-white rounded-md p-5 amazon-card border border-amazon-border">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+              <div className="relative rounded-md overflow-hidden border border-amazon-border bg-black aspect-video">
+                <video
+                  src={overviewVideo.file_url}
+                  controls
+                  preload="metadata"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div>
+                <div className="inline-flex items-center gap-2 text-amazon-orangehover mb-3">
+                  <Play className="h-5 w-5" />
+                  <span className="text-xs font-bold uppercase tracking-wide">Who We Are</span>
+                </div>
+                <h2 className="text-2xl font-bold text-amazon-text leading-tight">
+                  See What SiteSphere Is About
+                </h2>
+                <p className="mt-3 text-sm text-amazon-subtle leading-6">
+                  From graphics and advertising to content creation and our own products, SiteSphere helps businesses grow and entrepreneurs succeed.
+                </p>
+                <button
+                  onClick={() => onNavigate('services')}
+                  className="mt-6 bg-amazon-orange hover:bg-amazon-orangehover text-amazon-dark px-6 py-2.5 rounded-md font-bold text-sm transition inline-flex items-center justify-center gap-2"
+                >
+                  Explore Our Services <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Service cards grid — Amazon product card style */}
       <section className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 -mt-10 relative z-10">

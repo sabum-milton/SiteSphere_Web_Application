@@ -70,6 +70,14 @@ export interface Testimonial {
   imageUrl: string;
 }
 
+export interface MediaFile {
+  fileid: string;
+  file_name: string;
+  file_url: string;
+  size?: string;
+  created_at?: string;
+}
+
 export interface PricingPlan {
   id: string;
   name: string;
