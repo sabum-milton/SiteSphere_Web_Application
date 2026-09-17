@@ -10,6 +10,15 @@ interface HomeProps {
 
 const heroImage = 'https://images.pexels.com/photos/3182800/pexels-photo-3182800.jpeg?auto=compress&cs=tinysrgb&h=650&w=940';
 
+function isSafeMediaUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
 export default function Home({ onNavigate }: HomeProps) {
   const iconMap: Record<string, any> = { Code, Smartphone, Briefcase, TrendingUp, Package };
   const [overviewVideo, setOverviewVideo] = useState<MediaFile | null>(null);
@@ -27,7 +36,10 @@ export default function Home({ onNavigate }: HomeProps) {
 
       if (error || !data || data.length === 0) return;
 
-      if (isMounted) setOverviewVideo(data[0]);
+      const candidate = data[0];
+      if (!candidate.file_url || !isSafeMediaUrl(candidate.file_url)) return;
+
+      if (isMounted) setOverviewVideo(candidate);
     };
 
     loadOverviewVideo();
