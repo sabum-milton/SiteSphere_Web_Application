@@ -34,11 +34,22 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
 
 const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW_SECONDS = 600;
+const GLOBAL_RATE_LIMIT_MAX = 60;
+const GLOBAL_RATE_LIMIT_WINDOW_SECONDS = 3600;
 
+/*
+  Only the RIGHTMOST x-forwarded-for entry is appended by the platform proxy;
+  everything to its left is whatever the caller sent, so keying the rate limit
+  on the leftmost entry lets a caller pick a fresh bucket per request.
+*/
 function clientIp(req: Request): string {
   const forwarded = req.headers.get("x-forwarded-for") ?? "";
-  const first = forwarded.split(",")[0]?.trim();
-  return first || req.headers.get("cf-connecting-ip") || "unknown";
+  const hops = forwarded
+    .split(",")
+    .map((hop) => hop.trim())
+    .filter(Boolean);
+  const trusted = hops.length > 0 ? hops[hops.length - 1] : "";
+  return trusted || req.headers.get("cf-connecting-ip") || "unknown";
 }
 
 async function hashKey(value: string): Promise<string> {
@@ -117,6 +128,12 @@ Deno.serve(async (req: Request) => {
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string;
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
+    const tooManyRequests = () =>
+      new Response(
+        JSON.stringify({ error: "Too many submissions. Please try again later." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+
     const rateKey = await hashKey(`investor-form:${clientIp(req)}`);
     const { data: allowed, error: rateError } = await supabase.rpc("consume_rate_limit", {
       p_key: rateKey,
@@ -127,10 +144,20 @@ Deno.serve(async (req: Request) => {
     if (rateError) {
       console.error("Rate limit check failed:", rateError.message);
     } else if (allowed === false) {
-      return new Response(
-        JSON.stringify({ error: "Too many submissions. Please try again later." }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return tooManyRequests();
+    }
+
+    // Bounds total submissions even if per-caller keying is defeated.
+    const { data: globalAllowed, error: globalRateError } = await supabase.rpc("consume_rate_limit", {
+      p_key: "investor-form:global",
+      p_limit: GLOBAL_RATE_LIMIT_MAX,
+      p_window_seconds: GLOBAL_RATE_LIMIT_WINDOW_SECONDS,
+    });
+
+    if (globalRateError) {
+      console.error("Global rate limit check failed:", globalRateError.message);
+    } else if (globalAllowed === false) {
+      return tooManyRequests();
     }
 
     const { error: dbError } = await supabase
